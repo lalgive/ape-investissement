@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Isolation thermique en sous-face de plancher bas — flocage</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; font-size: 13px; color: #1a1a1a; background: #f5f5f3; line-height: 1.6; }
+  main { max-width: 1040px; margin: 32px auto; padding: 0 24px 64px; }
+  .ape-card { background: #fff; border: 0.5px solid #ddd; border-radius: 10px; padding: 28px 32px 24px; margin-bottom: 40px; }
+  .ape-meta { font-size: 11px; color: #888; margin-bottom: 4px; }
+  .ape-title { font-size: 17px; font-weight: 600; color: #1a1a1a; margin-bottom: 3px; }
+  .ape-date { font-size: 11px; color: #aaa; margin-bottom: 20px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 20px; }
+  th { background: #f1efe8; color: #5f5e5a; font-weight: 600; text-align: left; padding: 7px 9px; border-bottom: 1px solid #ddd; white-space: nowrap; }
+  td { padding: 7px 9px; border-bottom: 0.5px solid #ebebeb; vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f5f4f0; }
+  .section-head td { font-size: 10.5px; font-weight: 600; color: #888; padding: 9px 9px 4px; background: #f8f7f4; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 0.5px solid #e8e8e4; }
+  tr.highlight td { background: #EAF3DE; border-top: 1.5px solid #7ab648; border-bottom: 1.5px solid #7ab648; }
+  tr.highlight td:first-child { border-left: 3px solid #3B6D11; }
+  tr.highlight:hover td { background: #ddeece; }
+  .val { font-weight: 600; }
+  .prec { color: #bbb; font-size: 10.5px; }
+  .sub { font-size: 10.5px; color: #999; display: block; margin-top: 1px; }
+  .mv { font-size: 11px; color: #555; }
+  .badge { display: inline-block; font-size: 10.5px; padding: 2px 7px; border-radius: 4px; font-weight: 600; }
+  .badge-ok   { background: #C8E6B0; color: #2A5A08; }
+  .badge-warn { background: #FAEEDA; color: #854F0B; }
+  .badge-ko   { background: #FCEBEB; color: #A32D2D; }
+  tr.highlight .badge-ok { background: #3B6D11; color: #fff; }
+  .footer { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 4px; }
+  .footer-block { background: #f8f7f4; border-radius: 6px; padding: 12px 14px; }
+  .footer-label { font-size: 10px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .footer-body { font-size: 10.5px; color: #777; line-height: 1.6; }
+  .legend { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; font-size: 11px; color: #3B6D11; }
+  .legend-box { width: 14px; height: 14px; background: #EAF3DE; border: 1.5px solid #7ab648; border-left: 3px solid #3B6D11; flex-shrink: 0; }
+  @media (max-width: 700px) {
+    .footer { grid-template-columns: 1fr; }
+    main { padding: 0 12px 48px; }
+    .ape-card { padding: 20px 16px; }
+    th, td { padding: 6px 6px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+<main>
+<section class="ape-card" id="plancher-flocage">
+  <p class="ape-meta">Rénovation du bâtiment · Plancher · Chauffage</p>
+  <p class="ape-title">Isolation thermique en sous-face de plancher bas — flocage</p>
+  <p class="ape-date">Évaluation : avril 2026</p>
+  <div class="legend"><span class="legend-box"></span> Option de référence : conforme CEE, non biosourcée (dernière de la série)</div>
+  <table>
+    <thead>
+      <tr><th>R (m².K/W)</th><th>Épaisseur</th><th>Masse vol. (kg/m³)</th><th>Conformité</th><th>Four. HT (€/m²)</th><th>Pose HT (€/m²)</th><th>Total HT (€/m²)</th></tr>
+    </thead>
+    <tbody>
+      <tr class="section-head"><td colspan="7">Laine de roche projetée — λ = 0,035 W/m.K · incombustible A1 · résistant humidité</td></tr>
+      <tr>
+        <td><span class="val">1,00</span></td>
+        <td>35 mm<span class="sub">Laine de roche</span></td>
+        <td><span class="mv">130 – 160</span></td>
+        <td><span class="badge badge-ko">Non conforme</span></td>
+        <td><span class="val">4,5</span> <span class="prec">(± 20 %)</span></td>
+        <td><span class="val">12</span> <span class="prec">(± 25 %)</span></td>
+        <td><span class="val">16,5</span> <span class="prec">(± 24 %)</span></td>
+      </tr>
+      <tr>
+        <td><span class="val">2,00</span></td>
+        <td>70 mm<span class="sub">Laine de roche</span></td>
+        <td><span class="mv">130 – 160</span></td>
+        <td><span class="badge badge-ko">Non conforme</span></td>
+        <td><span class="val">8</span> <span class="prec">(± 20 %)</span></td>
+        <td><span class="val">13</span> <span class="prec">(± 25 %)</span></td>
+        <td><span class="val">21</span> <span class="prec">(± 23 %)</span></td>
+      </tr>
+      <tr>
+        <td><span class="val">2,70 – 3,00</span></td>
+        <td>95 – 105 mm<span class="sub">Laine de roche</span></td>
+        <td><span class="mv">130 – 160</span></td>
+        <td><span class="badge badge-ok">Conforme RT</span></td>
+        <td><span class="val">11</span> <span class="prec">(± 18 %)</span></td>
+        <td><span class="val">14</span> <span class="prec">(± 25 %)</span></td>
+        <td><span class="val">25</span> <span class="prec">(± 22 %)</span></td>
+      </tr>
+      <tr class="highlight">
+        <td><span class="val">3,50 – 4,00</span></td>
+        <td>120 – 140 mm<span class="sub">Laine de roche</span></td>
+        <td><span class="mv">130 – 160</span></td>
+        <td><span class="badge badge-ok">Conforme CEE</span></td>
+        <td><span class="val">14</span> <span class="prec">(± 18 %)</span></td>
+        <td><span class="val">15</span> <span class="prec">(± 25 %)</span></td>
+        <td><span class="val">29</span> <span class="prec">(± 22 %)</span></td>
+      </tr>
+      <tr>
+        <td><span class="val">5,00 – 6,00</span></td>
+        <td>175 – 210 mm<span class="sub">Laine de roche</span></td>
+        <td><span class="mv">130 – 160</span></td>
+        <td><span class="badge badge-ok">Haute perf.</span></td>
+        <td><span class="val">18</span> <span class="prec">(± 18 %)</span></td>
+        <td><span class="val">17</span> <span class="prec">(± 25 %)</span></td>
+        <td><span class="val">35</span> <span class="prec">(± 21 %)</span></td>
+      </tr>
+      <tr class="section-head"><td colspan="7">Ouate de cellulose projetée humide — λ = 0,040 W/m.K · biosourcé · bon déphasage thermique</td></tr>
+      <tr>
+        <td><span class="val">2,70 – 3,00</span></td>
+        <td>105 – 120 mm<span class="sub">Ouate de cellulose</span></td>
+        <td><span class="mv">50 – 60</span></td>
+        <td><span class="badge badge-ok">Conforme RT</span></td>
+        <td><span class="val">14</span> <span class="prec">(± 20 %)</span></td>
+        <td><span class="val">16</span> <span class="prec">(± 25 %)</span></td>
+        <td><span class="val">30</span> <span class="prec">(± 23 %)</span></td>
+      </tr>
+      <tr>
+        <td><span class="val">3,50 – 4,00</span></td>
+        <td>135 – 155 mm<span class="sub">Ouate de cellulose</span></td>
+        <td><span class="mv">50 – 60</span></td>
+        <td><span class="badge badge-ok">Conforme CEE</span></td>
+        <td><span class="val">18</span> <span class="prec">(± 20 %)</span></td>
+        <td><span class="val">17</span> <span class="prec">(± 25 %)</span></td>
+        <td><span class="val">35</span> <span class="prec">(± 22 %)</span></td>
+      </tr>
+      <tr>
+        <td><span class="val">5,00 – 6,00</span></td>
+        <td>195 – 235 mm<span class="sub">Ouate de cellulose</span></td>
+        <td><span class="mv">50 – 60</span></td>
+        <td><span class="badge badge-ok">Haute perf.</span></td>
+        <td><span class="val">23</span> <span class="prec">(± 20 %)</span></td>
+        <td><span class="val">19</span> <span class="prec">(± 25 %)</span></td>
+        <td><span class="val">42</span> <span class="prec">(± 22 %)</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="footer">
+    <div class="footer-block">
+      <p class="footer-label">Sources</p>
+      <p class="footer-body">Batitel — Office des prix du bâtiment (flocage 2025) · Lisolation.fr, prix-travaux-m2.com — laine de roche et ouate 2025<br>Legranit.org, etude-et-bilan-thermique.fr · Reabil.fr — tarifs IDF 2026<br>MN Isolation / Eurocoustic / Igloo France Cellulose / ECIMA / Fiche Ouattitude sept. 2024</p>
+    </div>
+    <div class="footer-block">
+      <p class="footer-label">Commentaires</p>
+      <p class="footer-body">Masse volumique après projection : laine de roche 130–160 kg/m³ (flocage sous dalle, DTU 27.1, bien plus dense que la laine soufflée combles 20–25 kg/m³) ; ouate de cellulose 50–60 kg/m³ (projection humide). Flocage sans finition apparente : sous-face brute ou peinte au pistolet. Pose inclut la machine de projection. Diagnostic amiante obligatoire pour bâtiments antérieurs à 1997. RT Existant : R ≥ 2,1 (H3) à 2,7 m².K/W (H1/H2). CEE : R ≥ 3,0 m².K/W. TVA 5,5 % en rénovation > 2 ans.</p>
+    </div>
+  </div>
+</section>
+</main>
+</body>
+</html>
