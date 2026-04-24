@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relamping LED — Bâtiments tertiaires</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial, sans-serif; font-size: 13px; color: #1a1a1a; background: #f5f5f3; line-height: 1.6; }
+  main { max-width: 1060px; margin: 32px auto; padding: 0 24px 64px; }
+  .ape-card { background: #fff; border: 0.5px solid #ddd; border-radius: 10px; padding: 28px 32px 24px; margin-bottom: 32px; }
+  .ape-meta { font-size: 11px; color: #888; margin-bottom: 4px; }
+  .ape-title { font-size: 17px; font-weight: 600; color: #1a1a1a; margin-bottom: 3px; }
+  .ape-date { font-size: 11px; color: #aaa; margin-bottom: 22px; }
+
+  h3 { font-size: 12px; font-weight: 700; color: #555; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 10px; padding-bottom: 6px; border-bottom: 1px solid #eee; }
+
+  /* ---- TABLEAU MOE ---- */
+  table.moe { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 8px; }
+  table.moe th { background: #edecea; color: #5f5e5a; font-weight: 600; text-align: center; padding: 7px 10px; border-bottom: 1px solid #ddd; }
+  table.moe th:first-child { text-align: left; }
+  table.moe td { padding: 7px 10px; border-bottom: 0.5px solid #ebebeb; text-align: center; }
+  table.moe td:first-child { text-align: left; color: #444; }
+  table.moe tr:last-child td { font-weight: 700; background: #f5f4f0; border-top: 1px solid #ddd; border-bottom: none; }
+  table.moe tr:hover:not(:last-child) td { background: #f9f8f5; }
+
+  /* ---- TABLEAU GLOBAL m² ---- */
+  table.global { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 8px; }
+  table.global th { background: #f1efe8; color: #5f5e5a; font-weight: 600; text-align: left; padding: 8px 10px; border-bottom: 1px solid #ddd; white-space: nowrap; }
+  table.global th .unit { display: block; font-size: 10px; font-weight: 400; color: #aaa; }
+  table.global td { padding: 8px 10px; border-bottom: 0.5px solid #ebebeb; vertical-align: top; }
+  table.global tr:last-child td { border-bottom: none; }
+  table.global tr:hover td { background: #f9f8f5; }
+  .scenario { font-weight: 600; color: #1a1a1a; }
+  .scenario-desc { font-size: 11px; color: #888; display: block; margin-top: 2px; font-weight: 400; }
+  .range { font-weight: 700; color: #2a4a7a; font-size: 13px; }
+  .range-sub { font-size: 10.5px; color: #888; display: block; }
+  .badge-info { display: inline-block; font-size: 10px; padding: 1px 6px; border-radius: 3px; font-weight: 600; background: #e8f0fb; color: #2a4a7a; }
+
+  /* ---- TABLEAU UNITAIRE ---- */
+  table.unit { width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 8px; }
+  table.unit th { background: #f1efe8; color: #5f5e5a; font-weight: 600; text-align: left; padding: 7px 9px; border-bottom: 1px solid #ddd; white-space: nowrap; }
+  table.unit th .unit-label { display: block; font-size: 10px; font-weight: 400; color: #aaa; }
+  table.unit td { padding: 7px 9px; border-bottom: 0.5px solid #ebebeb; vertical-align: middle; }
+  table.unit tr:last-child td { border-bottom: none; }
+  table.unit tr:hover td { background: #f9f8f5; }
+  .section-head td { font-size: 10.5px; font-weight: 700; color: #555; padding: 9px 9px 5px; background: #f8f7f4; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 0.5px solid #e0e0d8; border-top: 2px solid #d4d0c8; }
+  .lum-name { font-weight: 600; }
+  .lum-sub { font-size: 10.5px; color: #999; display: block; margin-top: 1px; }
+  .val { font-weight: 700; }
+  .prec { color: #bbb; font-size: 10.5px; }
+  .total-val { font-weight: 700; color: #2a4a7a; }
+
+  /* ---- MODIFICATEURS ---- */
+  .modif-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+  .modif-item { background: #f8f7f4; border-radius: 6px; padding: 10px 13px; display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+  .modif-label { font-size: 11.5px; color: #555; }
+  .modif-val { font-size: 12px; font-weight: 700; color: #854F0B; white-space: nowrap; }
+  .modif-val.pos { color: #2A5A08; }
+
+  /* ---- FOOTER ---- */
+  .footer { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 4px; }
+  .footer-block { background: #f8f7f4; border-radius: 6px; padding: 12px 14px; }
+  .footer-label { font-size: 10px; font-weight: 700; color: #888; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .footer-body { font-size: 10.5px; color: #777; line-height: 1.7; }
+
+  .sep { margin: 22px 0 18px; border: none; border-top: 1.5px solid #efefeb; }
+
+  @media (max-width: 700px) {
+    .footer, .modif-grid { grid-template-columns: 1fr; }
+    main { padding: 0 12px 48px; }
+    .ape-card { padding: 18px 14px; }
+  }
+</style>
+</head>
+<body>
+<main>
+<section class="ape-card" id="relamping-led-tertiaire">
+
+  <p class="ape-meta">Éclairage · Rénovation tertiaire</p>
+  <p class="ape-title">Relamping LED — Bâtiments tertiaires</p>
+  <p class="ape-date">Évaluation : avril 2026 · Prix HT France métropolitaine</p>
+
+  <!-- 1. MOE -->
+  <h3>Majoration gestion de projet / maîtrise d'œuvre (% du total travaux HT)</h3>
+  <table class="moe">
+    <thead>
+      <tr>
+        <th>Poste</th>
+        <th>Petite opération<br><span style="font-weight:400;font-size:10px;">&lt; 500 m²</span></th>
+        <th>Opération moyenne<br><span style="font-weight:400;font-size:10px;">500 – 3 000 m²</span></th>
+        <th>Grande opération<br><span style="font-weight:400;font-size:10px;">&gt; 3 000 m²</span></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Audit lumineux + photométrie (DIALux)</td>
+        <td>3 – 5 %</td><td>2 – 3 %</td><td>1 – 2 %</td>
+      </tr>
+      <tr>
+        <td>Maîtrise d'œuvre / suivi chantier</td>
+        <td>8 – 12 %</td><td>6 – 8 %</td><td>4 – 6 %</td>
+      </tr>
+      <tr>
+        <td>Démarche CEE (souvent prise en charge opérateur)</td>
+        <td>0 – 2 %</td><td>0 – 1 %</td><td>0 – 0,5 %</td>
+      </tr>
+      <tr>
+        <td>Total majoration indicative</td>
+        <td>11 – 19 %</td><td>8 – 12 %</td><td>5 – 8,5 %</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="font-size:10.5px;color:#aaa;margin-bottom:22px;">Ces % s'appliquent en supplément du coût fourniture + pose HT ci-dessous.</p>
+
+  <hr class="sep">
+
+  <!-- 2. PRIX GLOBAUX AU m² -->
+  <h3>Prix globaux au m² — Fourniture + Pose HT (tous types d'espaces tertiaires)</h3>
+  <table class="global">
+    <thead>
+      <tr>
+        <th style="width:38%">Scénario<span class="unit">Nature des travaux</span></th>
+        <th>Four. HT<span class="unit">€ / m²</span></th>
+        <th>Pose HT<span class="unit">€ / m²</span></th>
+        <th>Total HT<span class="unit">€ / m²</span></th>
+        <th>Commentaire</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="scenario">Remplacement simple (1 pour 1)</span><span class="scenario-desc">Même support conservé · tube LED sur ballast existant ou dalle de même format</span></td>
+        <td><span class="range">4 – 8</span></td>
+        <td><span class="range">4 – 7</span></td>
+        <td><span class="range">8 – 15</span></td>
+        <td><span class="badge-info">Cas le plus courant</span><span class="range-sub">Luminaires en bon état, câblage conforme</span></td>
+      </tr>
+      <tr>
+        <td><span class="scenario">Remplacement avec adaptation support</span><span class="scenario-desc">Nouveau luminaire · format différent (dalle ≠ réglette) · adaptation faux-plafond</span></td>
+        <td><span class="range">8 – 14</span></td>
+        <td><span class="range">7 – 11</span></td>
+        <td><span class="range">15 – 25</span></td>
+        <td><span class="range-sub">Plafond ouvert, rebouchage inclus</span></td>
+      </tr>
+      <tr>
+        <td><span class="scenario">Rénovation complète du système</span><span class="scenario-desc">Nouveau câblage partiel · nouveaux luminaires design ou suspendus · GTB / DALI</span></td>
+        <td><span class="range">13 – 28</span></td>
+        <td><span class="range">12 – 22</span></td>
+        <td><span class="range">25 – 50</span></td>
+        <td><span class="range-sub">Immeuble neuf ou restructuration lourde</span></td>
+      </tr>
+      <tr>
+        <td><span class="scenario">Référence : plateau bureaux standard</span><span class="scenario-desc">Dalles LED 60×60 en remplacement tubes fluorescents · câblage conforme</span></td>
+        <td><span class="range">6 – 10</span></td>
+        <td><span class="range">6 – 10</span></td>
+        <td><span class="range" style="color:#3B6D11;">12 – 20</span></td>
+        <td><span class="badge-info" style="background:#EAF3DE;color:#2A5A08;">Fourchette la plus observée</span></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr class="sep">
+
+  <!-- 3. MODIFICATEURS -->
+  <h3>Facteurs de variation du prix au m²</h3>
+  <div class="modif-grid">
+    <div class="modif-item"><span class="modif-label">Hauteur sous plafond &gt; 3 m (nacelle / échafaudage)</span><span class="modif-val">+ 3 – 8 €/m²</span></div>
+    <div class="modif-item"><span class="modif-label">Détecteurs de présence / gradation DALI</span><span class="modif-val">+ 5 – 15 €/m²</span></div>
+    <div class="modif-item"><span class="modif-label">Grande surface (&gt; 1 000 m²) — effet volume</span><span class="modif-val pos">− 10 – 20 %</span></div>
+    <div class="modif-item"><span class="modif-label">Localisation Île-de-France vs province</span><span class="modif-val">+ 10 – 20 %</span></div>
+    <div class="modif-item"><span class="modif-label">Câblage vétuste à mettre aux normes</span><span class="modif-val">+ 5 – 20 €/m²</span></div>
+    <div class="modif-item"><span class="modif-label">Éclairage circadien (CCT variable, biodynamique)</span><span class="modif-val">+ 8 – 20 €/m²</span></div>
+  </div>
+
+  <hr class="sep">
+
+  <!-- 4. PRIX UNITAIRES CAS SIMPLES -->
+  <h3>Prix unitaires — Cas simples : remplacement 1 pour 1 (Four. + Pose, HT / unité)</h3>
+  <table class="unit">
+    <thead>
+      <tr>
+        <th style="width:38%">Luminaire<span class="unit-label">Type de remplacement</span></th>
+        <th>Lux cible<span class="unit-label">NF EN 12464-1</span></th>
+        <th>Four. HT<span class="unit-label">€ / unité</span></th>
+        <th>Pose HT<span class="unit-label">€ / unité</span></th>
+        <th>Total HT<span class="unit-label">€ / unité</span></th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr class="section-head"><td colspan="5">Bureaux · Open space · Salles de réunion</td></tr>
+      <tr>
+        <td><span class="lum-name">Dalle LED 60×60 cm — 36 W · 4 000 lm</span><span class="lum-sub">Remplacement dalle fluorescente 4×18 W · faux-plafond existant</span></td>
+        <td>500 lux</td>
+        <td><span class="val">28 – 50</span> <span class="prec">€</span></td>
+        <td><span class="val">20 – 30</span> <span class="prec">€</span></td>
+        <td class="total-val">48 – 80 €</td>
+      </tr>
+      <tr>
+        <td><span class="lum-name">Tube LED T8 120 cm — 18 W · 2 000 lm</span><span class="lum-sub">Remplacement tube fluorescent 36 W · ballast retiré ou conservé compatible</span></td>
+        <td>300 – 500 lux</td>
+        <td><span class="val">8 – 18</span> <span class="prec">€</span></td>
+        <td><span class="val">10 – 18</span> <span class="prec">€</span></td>
+        <td class="total-val">18 – 36 €</td>
+      </tr>
+
+      <tr class="section-head"><td colspan="5">Circulations · Couloirs · Halls</td></tr>
+      <tr>
+        <td><span class="lum-name">Plafonnier LED encastré — 12 W · 1 200 lm</span><span class="lum-sub">Remplacement plafonnier halogène ou fluo-compact · même boîte d'encastrement</span></td>
+        <td>100 lux</td>
+        <td><span class="val">15 – 25</span> <span class="prec">€</span></td>
+        <td><span class="val">15 – 22</span> <span class="prec">€</span></td>
+        <td class="total-val">30 – 47 €</td>
+      </tr>
+      <tr>
+        <td><span class="lum-name">Réglette LED saillie IP44 — 20 W · 2 400 lm</span><span class="lum-sub">Remplacement réglette néon · même support mural ou plafond</span></td>
+        <td>100 lux</td>
+        <td><span class="val">18 – 30</span> <span class="prec">€</span></td>
+        <td><span class="val">12 – 20</span> <span class="prec">€</span></td>
+        <td class="total-val">30 – 50 €</td>
+      </tr>
+
+      <tr class="section-head"><td colspan="5">Logistique · Entrepôts (hauteur 6 – 10 m)</td></tr>
+      <tr>
+        <td><span class="lum-name">Cloche LED UFO — 100 W · 14 000 lm · IP65</span><span class="lum-sub">Remplacement cloche sodium ou iodure métallique · même fixation suspension</span></td>
+        <td>200 lux</td>
+        <td><span class="val">55 – 90</span> <span class="prec">€</span></td>
+        <td><span class="val">40 – 70</span> <span class="prec">€</span></td>
+        <td class="total-val">95 – 160 €</td>
+      </tr>
+
+      <tr class="section-head"><td colspan="5">Sanitaires · Vestiaires</td></tr>
+      <tr>
+        <td><span class="lum-name">Plafonnier LED IP44 — 18 W · 2 000 lm</span><span class="lum-sub">Remplacement plafonnier étanche · même boîte</span></td>
+        <td>200 lux</td>
+        <td><span class="val">18 – 28</span> <span class="prec">€</span></td>
+        <td><span class="val">15 – 22</span> <span class="prec">€</span></td>
+        <td class="total-val">33 – 50 €</td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <hr class="sep">
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div class="footer-block">
+      <p class="footer-label">Sources</p>
+      <p class="footer-body">
+        Cee.fr / Pro.cee.fr — fourchettes marché relamping tertiaire 2025-2026<br>
+        Relampix · Fastwatt · Acieb Énergie — données projets bureaux France 2025<br>
+        Hellopro / Silamp / Aluson Éclairage / LampesDirect — tarifs négoce pro 2025<br>
+        Batitel — Office des prix du bâtiment (pose électricien 2025)<br>
+        NF EN 12464-1 (août 2021) · Code du travail art. R4223-4
+      </p>
+    </div>
+    <div class="footer-block">
+      <p class="footer-label">Commentaires</p>
+      <p class="footer-body">
+        Prix au m² : fourniture et pose sont estimées séparément pour permettre une décomposition. La part pose représente généralement 40 – 50 % du total sur les projets simples, davantage en grande hauteur.<br><br>
+        Prix unitaires : valables uniquement pour un remplacement 1 pour 1 sans modification de câblage ni de support. Tout changement de position ou de format bascule dans le scénario "adaptation support".<br><br>
+        TVA applicable : 10 % (travaux rénovation). CEE : fiche BAT-EQ-127 — prime déductible du montant travaux, à initier avant démarrage chantier.
+      </p>
+    </div>
+  </div>
+
+</section>
+</main>
+</body>
+</html>
